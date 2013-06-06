@@ -155,7 +155,7 @@ class User(db.Model):
             return False
 
         # allow a bit of variance in the minutes
-        minutes_range = range(current_utc_offset_minutes - 3, current_utc_offset_minutes + 3)
+        minutes_range = range(current_utc_offset_minutes - 10, current_utc_offset_minutes + 10)
         minutes_range = map(wrap_minutes, minutes_range)
 
         if self.alarm_minute not in minutes_range:

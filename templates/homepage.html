@@ -23,7 +23,7 @@
                     <div class="text-center">
 
                         <h1>Rooster</h1>
-                        <h3>Wake up to a text with the day's forecast</h3>
+                        <h4>Wake up to a text message with the day's forecast.</h4>
 
                         <hr />
                         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -40,6 +40,11 @@
 
                     <form class="form" action="{{ url_for('homepage') }}" method="post">
                         <div class="row">
+                            <div class="span4 offset1">
+                                <h4>Your Info <small><i class="icon-lock"></i></small></h4>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="span2 offset1">
                                 <input type="text" class="span2" id="phone" name="phone" placeholder="Phone Number" />
                                 <span class="help-block">Phone Number (ie 440-321-0909)</span>
@@ -47,6 +52,12 @@
                             <div class="span2">
                                 <input type="text" class="span2" id="zipcode" name="zipcode" placeholder="Zip Code" />
                                 <span class="help-block">Zip Code (ie 02139)</span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="span4 offset1">
+                                <h4>Alarm Info <small>Only sent Mon - Fri</small></h4>
                             </div>
                         </div>
                         <div class="row">
@@ -70,17 +81,9 @@
                             <div class="span1">
                                 <select class="span1" id="alarm-minute" name="alarm-minute">
                                     <option value="00">00</option>
-                                    <option value="05">05</option>
-                                    <option value="10">10</option>
                                     <option value="15">15</option>
-                                    <option value="20">20</option>
-                                    <option value="25">25</option>
                                     <option value="30">30</option>
-                                    <option value="35">35</option>
-                                    <option value="40">40</option>
                                     <option value="45" selected>45</option>
-                                    <option value="50">50</option>
-                                    <option value="55">55</option>
                                 </select>
                                 <span class="help-block">Alarm Minute</span>
                             </div>
