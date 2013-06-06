@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 
@@ -13,7 +13,20 @@ db = SQLAlchemy(app)
 @app.route("/", methods=['GET', 'POST'])
 def homepage():
     if request.method == 'POST':
-        pass
+        u = User(
+            phone=request.form.get("phone"),
+            zipcode=request.form.get("zipcode"),
+            alarm_time=request.form.get("alarm-time"),
+            time_zone=request.form.get("time-zone"),
+        )
+        db.session.add(u)
+        try:
+            db.session.commit()
+        except IntegrityError:
+            pass
+
+        return redirect(url_for('homepage'))
+
     else:
         return render_template("homepage.html")
 
