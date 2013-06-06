@@ -43,9 +43,13 @@ class ForecastClient(object):
                 if hour.get("time"):
                     daily_high_time = datetime.fromtimestamp(hour.get("time"))
 
-        temp_summary = "High of {temp} at {time}".format(
+        daily_high_hour = daily_high_time.hour
+        if daily_high_hour > 12:
+            daily_high_hour = daily_high_hour - 12
+
+        temp_summary = "High of {temp} at {hour} o'clock.".format(
             temp=self.format_temperature(daily_high_temp),
-            time=daily_high_time.strftime("%I:%M %p").lower()
+            hour=daily_high_hour
         )
 
         overall_summary = overall_summary + " " + temp_summary
