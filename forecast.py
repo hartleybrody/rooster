@@ -43,13 +43,21 @@ class ForecastClient(object):
                 if hour.get("time"):
                     daily_high_time = datetime.fromtimestamp(hour.get("time"))
 
+        # pretty print the hour of the high temp
         daily_high_hour = daily_high_time.hour
-        if daily_high_hour > 12:
+        if daily_high_hour == 0:
+            hour_str = "midnight"
+        elif daily_high_hour == 12:
+            hour_str = "noon"
+        elif daily_high_hour > 12:
             daily_high_hour = daily_high_hour - 12
+            hour_str = "{hour}pm".format(hour=daily_high_hour)
+        else:
+            hour_str = "{hour}am".format(hour=daily_high_hour)
 
-        temp_summary = "High of {temp} at {hour} o'clock.".format(
+        temp_summary = "High of {temp} at {hour_str}.".format(
             temp=self.format_temperature(daily_high_temp),
-            hour=daily_high_hour
+            hour_str=hour_str
         )
 
         overall_summary = overall_summary + " " + temp_summary
