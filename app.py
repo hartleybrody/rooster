@@ -51,16 +51,16 @@ def homepage():
 @app.route("/send/all/")
 def send_all():
 
-    if "localhost" not in request.url:
+    if "localhost" in request.url and app.debug:
+        users = User.query.all()
+        for user in users:
+            sent = user.send_message()
+            if sent:
+                print "sent msg to %r" % user
+        return "okay", 200
+
+    else:
         return "nope, sorry", 403
-
-    users = User.query.all()
-    for user in users:
-        sent = user.send_message()
-        if sent:
-            print "sent msg to %r" % user
-
-    return "okay", 200
 
 
 @app.route("/send/")
