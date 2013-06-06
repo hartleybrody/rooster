@@ -47,6 +47,65 @@ def homepage():
         return render_template("homepage.html")
 
 
+@app.route("/send/all/")
+def send_all():
+
+    users = User.query.all()
+    for user in users:
+        user.send_message()
+
+
+@app.route("/send/")
+def send_texts():
+
+    # get the current number of seconds since the beginning of the day in UTC
+    utc_now = datetime.utcnow()
+    midnight_utc = datetime.combine(utc_now.date(), time(0))
+    delta = utc_now - midnight_utc
+
+    current_utc_offset_seconds = int(delta.total_seconds())
+    current_utc_offset_hours = current_utc_offset_seconds / (60 * 60)
+    current_utc_offset_minutes = (current_utc_offset_seconds - (60 * 60 * current_utc_offset_hours)) / 60
+
+    return_str = "current UTC time is {h}:{m}\n".format(h=current_utc_offset_hours, m=current_utc_offset_minutes)
+
+    users = User.query.all()
+    for user in users:
+        alarm_hour = int(user.alarm_hour)
+        time_zone = user.time_zone
+
+        if time_zone.startswith("-"):
+            desired_alarm_hour = alarm_hour + int(time_zone.split("-")[1])
+        else:
+            desired_alarm_hour = alarm_hour - int(time_zone)
+
+        if desired_alarm_hour != current_utc_offset_hours:
+            continue
+
+        # allow a bit of variance in the minutes
+        minutes_range = range(current_utc_offset_minutes - 3, current_utc_offset_minutes + 3)
+        minutes_range = map(wrap_minutes, minutes_range)
+
+        if user.alarm_minute not in minutes_range:
+            continue
+
+        user.send_message()
+
+    return return_str
+
+
+def wrap_minutes(m):
+    """
+    Make sure the minutes in minutes_range stay between 0 and 59.
+    """
+    if m < 0:
+        return m + 60
+    elif m > 59:
+        return m - 60
+    else:
+        return m
+
+
 class User(db.Model):
 
     __tablename__ = "rooster_users"
@@ -67,6 +126,31 @@ class User(db.Model):
 
     def __repr__(self):
         return '<Phone Num %r>' % self.phone
+
+    def send_message(self):
+        """
+        Send this user their cock-a-doodle-doo!
+        """
+
+        from geocoding import GeoCodingClient
+        from twilio import TwilioClient
+        from forecast import ForecastClient
+
+        g = GeoCodingClient()
+        geo_info = g.lookup_zipcode(self.zipcode)
+
+        print self.zipcode
+        print geo_info
+
+        latitude = geo_info["results"][0]["geometry"]["location"]["lat"]
+        longitude = geo_info["results"][0]["geometry"]["location"]["lng"]
+
+        f = ForecastClient()
+        forecast = f.get_forecast(latitude, longitude)
+
+        t = TwilioClient()
+        t.send_message(self.phone, forecast)
+
 
 if __name__ == "__main__":
     app.debug = True
