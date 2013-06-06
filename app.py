@@ -1,4 +1,5 @@
 import os
+from datetime import datetime, time
 
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -13,22 +14,32 @@ db = SQLAlchemy(app)
 @app.route("/", methods=['GET', 'POST'])
 def homepage():
     if request.method == 'POST':
-        u = User(
-            phone=request.form.get("phone"),
-            zipcode=request.form.get("zipcode"),
-            alarm_time=request.form.get("alarm-time"),
-            time_zone=request.form.get("time-zone"),
-        )
+        data = {
+            "phone": request.form.get("phone"),
+            "zipcode": request.form.get("zipcode"),
+            "alarm_hour": request.form.get("alarm-hour"),
+            "alarm_minute": request.form.get("alarm-minute"),
+            "time_zone": request.form.get("time-zone"),
+        }
+
+        for key, value in data.items():
+            if value is None or value == "":
+                flash("Whoops, don't forget to fill out %s" % key, "error")
+                return redirect(url_for('homepage'))
+
+        u = User(**data)
         db.session.add(u)
+
         try:
             db.session.commit()
-            flash("Cock-a-doodle-doo! You'll get your first text at %s" % request.form.get("alarm-time"), "success")
+            flash("Cock-a-doodle-doo! You'll get your first text at %s:%s" % (data["alarm_hour"], data["alarm_minute"]), "success")
         except IntegrityError:
             try:
                 User.query.filter_by(phone=u.phone)
                 flash("Hey thanks! Looks like you already signed up.", "warning")
             except:
                 flash("Uh oh! Error saving you to the database", "error")
+                print "unknown error..."
 
         return redirect(url_for('homepage'))
 
@@ -42,14 +53,16 @@ class User(db.Model):
 
     id =            db.Column(db.Integer, primary_key=True)
     phone =         db.Column(db.String(30), unique=True)
-    zipcode =       db.Column(db.String(12))
-    alarm_time =    db.Column(db.String(12))
-    time_zone =     db.Column(db.String(12))
+    zipcode =       db.Column(db.String(8))
+    alarm_hour =    db.Column(db.String(2))
+    alarm_minute =  db.Column(db.String(2))
+    time_zone =     db.Column(db.String(3))
 
-    def __init__(self, phone, zipcode, alarm_time, time_zone):
+    def __init__(self, phone, zipcode, alarm_hour, alarm_minute, time_zone):
         self.phone = phone
         self.zipcode = zipcode
-        self.alarm_time = alarm_time
+        self.alarm_hour = alarm_hour
+        self.alarm_minute = alarm_minute
         self.time_zone = time_zone
 
     def __repr__(self):
