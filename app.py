@@ -56,34 +56,6 @@ def homepage():
         return render_template("homepage.html")
 
 
-@app.route("/send/all/")
-def send_all():
-
-    if "localhost" in request.url and app.debug:
-        users = User.query.all()
-        for user in users:
-            print user.send_message()
-
-        return "okay", 201
-
-    else:
-        return "nope, sorry", 403
-
-
-@app.route("/send/")
-def send_texts():
-
-    users = User.query.all()
-    for user in users:
-        if user.needs_message_now():
-            try:
-                user.send_message()
-            except:
-                sentry.captureException()
-
-    return "okay", 201
-
-
 def wrap_minutes(m):
     """
     Make sure the minutes in minutes_range stay between 0 and 59.
@@ -107,6 +79,7 @@ class User(db.Model):
     alarm_minute =      db.Column(db.String(2))
     alarm_meridian =    db.Column(db.String(2))
     time_zone =         db.Column(db.String(3))
+    is_active =         db.Column(db.Boolean, default=True)
 
     def __init__(self, phone, zipcode, alarm_hour, alarm_minute, alarm_meridian, time_zone):
         self.phone = phone
@@ -162,7 +135,6 @@ class User(db.Model):
             return False
 
         return True
-
 
     def send_message(self):
         """
