@@ -8,6 +8,7 @@ from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['POSTGRES_URL']
+app.secret_key = os.urandom(24)
 db = SQLAlchemy(app)
 
 
@@ -117,12 +118,20 @@ class User(db.Model):
         self.time_zone = time_zone
 
     def __repr__(self):
-        return '<Phone Num %r>' % self.phone
+        return '<User %r>' % self.phone
 
     def send_message(self):
         """
-        Send this user their cock-a-doodle-doo!
+        Send this user their forecast
         """
+
+        today = datetime.utcnow().date()
+        texts = Text.query.filter(Text.user_id == self.id).all()
+
+        for text in texts:
+            if text.sent.date() == today:
+                print "already texted this user today"
+                return False
 
         from geocoding import GeoCodingClient
         from twilio import TwilioClient
@@ -140,8 +149,31 @@ class User(db.Model):
         t = TwilioClient()
         t.send_message(self.phone, forecast)
 
+        text = Text(user=self, message=forecast)
+        db.session.add(text)
+        db.session.commit()
+        return True
+
+
+class Text(db.Model):
+
+    __tablename__ = "rooster_texts"
+
+    id =        db.Column(db.Integer, primary_key=True)
+    user_id =   db.Column(db.Integer, db.ForeignKey('rooster_users.id'))
+    user =      db.relationship('User', backref=db.backref('texts', lazy='dynamic'))
+    sent =      db.Column(db.DateTime)
+    message =   db.Column(db.String(160))
+
+    def __init__(self, user, message):
+        self.user = user
+        self.sent = datetime.utcnow()
+        self.message = message
+
+    def __repr__(self):
+        return '<Text %r>' % self.message
+
 
 if __name__ == "__main__":
     app.debug = True
-    app.secret_key = os.urandom(24)
     app.run()
