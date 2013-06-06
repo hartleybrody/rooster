@@ -17,48 +17,54 @@
 
         <div class="container">
             <div class="row">
-                <div class="pull-right">by Hartley Brody</div>
+                <div class="pull-right"></div>
             </div>
 
             <div class="row text-center">
-                <div class="span6 offset3">
-                    <div id="signup-area">
-                        <h1>Rooster</h1>
-                        <h3>Wake up to a text with the day's forecast</h3>
+                <div class="span6 offset3" id="signup-area">
+
+                    <h1>Rooster</h1>
+                    <h3>Wake up to a text with the day's forecast</h3>
+
+                    <hr />
+
+                    <form class="form" action="/" method="post">
+                        <div class="row">
+                            <div class="span3">
+                                <input type="text" class="span2" id="phone" name="phone" placeholder="Phone Number" />
+                                <span class="help-block">Phone Number (ie 440-321-0909)</span>
+                            </div>
+                            <div class="span3">
+                                <input type="text" class="span2" id="zipcode" name="zipcode" placeholder="Zip Code" />
+                                <span class="help-block">Zip Code (ie 02139)</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="span3">
+                                <input type="text" class="span2" id="alarm-time" name="alarm-time" placeholder="Alarm Time" />
+                                <span class="help-block">Alarm Time (ie 7:45am)</span>
+                            </div>
+                            <div class="span3">
+                                <input type="text" class="span2" id="alarm-tz" name="alarm-tz" placeholder="Timezone" />
+                                <span class="help-block">TImezone (ie +5:00)</span>
+                            </div>
+                        </div>
 
                         <hr />
 
-                        <form class="form" action="/" method="post">
-                            <div class="row">
-                                <div class="span3">
-                                    <input type="text" class="span2" id="phone" name="phone" placeholder="Phone Number" />
-                                    <span class="help-block">Phone Number (ie 440-321-0909)</span>
-                                </div>
-                                <div class="span3">
-                                    <input type="text" class="span2" id="zipcode" name="zipcode" placeholder="Zip Code" />
-                                    <span class="help-block">Zip Code (ie 02139)</span>
-                                </div>
+                        <div class="row">
+                            <div class="span4 text-center">
+                                <small class="muted">
+                                    Built by <a href="https://github.com/hartleybrody">Hartley Brody</a>.<br>
+                                    Image via <a href="http://www.flickr.com/photos/9242564@N07/6868613488/in/photostream/" target="_blank">Flickr</a>.
+                                </small>
                             </div>
-                            <div class="row">
-                                <div class="span3">
-                                    <input type="text" class="span2" id="alarm-time" name="alarm-time" placeholder="Alarm Time" />
-                                    <span class="help-block">Alarm Time (ie 7:45am)</span>
-                                </div>
-                                <div class="span3">
-                                    <input type="text" class="span2" id="alarm-tz" name="alarm-tz" placeholder="Timezone" />
-                                    <span class="help-block">TImezone (ie +5:00)</span>
-                                </div>
+                            <div class="span2 text-center">
+                                <input type="submit" class="btn btn-warning btn-large" value="Sign Up &rarr;" />
                             </div>
+                        </div>
+                    </form>
 
-                            <hr />
-                            
-                            <div class="row">
-                                <div class="span5 text-right">
-                                    <input type="submit" class="btn btn-warning btn-large" value="Sign Up &rarr;" />
-                                </div>
-                            </div>
-                        </form>
-                    </div>
                 </div>
             </div>
 
