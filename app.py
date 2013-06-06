@@ -97,8 +97,11 @@ class User(db.Model):
         Should we text the user right now?
         """
 
-        # get the current number of seconds since the beginning of the day in UTC
         utc_now = datetime.utcnow()
+        if utc_now.weekday() in [5, 6]:
+            return False  # don't send on weekends
+
+        # get the current number of seconds since the beginning of the day in UTC
         midnight_utc = datetime.combine(utc_now.date(), time(0))
         delta = utc_now - midnight_utc
 
