@@ -1,0 +1,40 @@
+body{
+    background-color: rgba(125, 125, 125, 0.8);
+}
+
+#signup-area{
+    margin: 100px auto 100px;
+    text-align: center;
+
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 2px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+
+}
+
+input {
+    font-size: 1.2em;
+    line-height: 1.3em;
+}
+
+#zipcode{
+    font-size: 90px;
+    line-height: 95px;
+    height: 100px;
+}
+
+h1, h2 {
+    font-family: "Lobster", serif;
+}
+h3, h4 {
+    font-family: "Droid Serif", serif;
+}
+
+h1 {
+    font-size: 110px;
+    line-height: 130px;
+}
+
+.help-block{
+    font-size: 0.8em;
+}
