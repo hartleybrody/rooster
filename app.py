@@ -139,9 +139,6 @@ class User(db.Model):
         g = GeoCodingClient()
         geo_info = g.lookup_zipcode(self.zipcode)
 
-        print self.zipcode
-        print geo_info
-
         latitude = geo_info["results"][0]["geometry"]["location"]["lat"]
         longitude = geo_info["results"][0]["geometry"]["location"]["lng"]
 

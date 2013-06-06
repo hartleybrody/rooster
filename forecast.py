@@ -80,4 +80,4 @@ class ForecastClient(object):
 
 if __name__ == "__main__":
     f = ForecastClient()
-    print f.get_forecast(42.362481, -71.101771)
+    print f.get_forecast(42.36, -71.10)

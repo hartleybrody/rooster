@@ -38,4 +38,4 @@ class TwilioClient(object):
 
 if __name__ == "__main__":
     t = TwilioClient()
-    t.send_message("216-973-8246", "this is a test message")
+    t.send_message(os.environ["TEST_PHONE_NUM"], "this is a test message")
