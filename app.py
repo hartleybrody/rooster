@@ -4,12 +4,19 @@ from datetime import datetime, time
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
+from raven.contrib.flask import Sentry
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['POSTGRES_URL']
 app.secret_key = os.urandom(24)
+
+# config postgres
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['POSTGRES_URL']
 db = SQLAlchemy(app)
+
+# config sentry
+app.config['SENTRY_DSN'] = os.environ['SENTRY_DSN']
+sentry = Sentry(app)
 
 
 @app.route("/", methods=['GET', 'POST'])
@@ -69,7 +76,10 @@ def send_texts():
     users = User.query.all()
     for user in users:
         if user.needs_message_now():
-            print user.send_message()
+            try:
+                user.send_message()
+            except:
+                sentry.captureException()
 
     return "okay", 201
 
