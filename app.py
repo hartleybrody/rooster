@@ -47,14 +47,6 @@ def homepage():
         return render_template("homepage.html")
 
 
-@app.route("/send/all/")
-def send_all():
-
-    users = User.query.all()
-    for user in users:
-        user.send_message()
-
-
 @app.route("/send/")
 def send_texts():
 
