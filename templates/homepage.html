@@ -26,10 +26,16 @@
                         <h1>Rooster</h1>
                         <h3>Wake up to a text with the day's forecast</h3>
 
+                        <hr />
+
                         <form class="form" action="/" method="post">
                             <div class="row">
-                                <div class="span6">
-                                    <input type="text" class="span3" id="zipcode" name="zipcode" placeholder="Zip Code" />
+                                <div class="span3">
+                                    <input type="text" class="span2" id="phone" name="phone" placeholder="Phone Number" />
+                                    <span class="help-block">Phone Number (ie 440-321-0909)</span>
+                                </div>
+                                <div class="span3">
+                                    <input type="text" class="span2" id="zipcode" name="zipcode" placeholder="Zip Code" />
                                     <span class="help-block">Zip Code (ie 02139)</span>
                                 </div>
                             </div>
@@ -42,6 +48,15 @@
                                     <input type="text" class="span2" id="alarm-tz" name="alarm-tz" placeholder="Timezone" />
                                     <span class="help-block">TImezone (ie +5:00)</span>
                                 </div>
+                            </div>
+
+                            <hr />
+                            
+                            <div class="row">
+                                <div class="span5 text-right">
+                                    <input type="submit" class="btn btn-warning btn-large" value="Sign Up &rarr;" />
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>

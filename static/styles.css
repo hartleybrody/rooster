@@ -1,12 +1,20 @@
+html { 
+  background: url('rooster-bg.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 body{
-    background-color: rgba(125, 125, 125, 0.8);
+    background: rgba(255, 255, 255, 0.0);
 }
 
 #signup-area{
     margin: 100px auto 100px;
     text-align: center;
 
-    background-color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.7);
     border-radius: 2px;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
 
@@ -15,12 +23,6 @@ body{
 input {
     font-size: 1.2em;
     line-height: 1.3em;
-}
-
-#zipcode{
-    font-size: 90px;
-    line-height: 95px;
-    height: 100px;
 }
 
 h1, h2 {
