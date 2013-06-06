@@ -13,7 +13,6 @@ app.secret_key = os.urandom(24)
 # config postgres
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['POSTGRES_URL']
 db = SQLAlchemy(app)
-sentry = Sentry()
 
 # config sentry
 app.config['SENTRY_DSN'] = os.environ['SENTRY_DSN']
