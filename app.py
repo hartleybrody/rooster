@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 
@@ -22,8 +22,13 @@ def homepage():
         db.session.add(u)
         try:
             db.session.commit()
+            flash("Cock-a-doodle-doo! You'll get your first text at %s" % request.form.get("alarm-time"), "success")
         except IntegrityError:
-            pass
+            try:
+                User.query.filter_by(phone=u.phone)
+                flash("Hey thanks! Looks like you already signed up.", "warning")
+            except:
+                flash("Uh oh! Error saving you to the database", "error")
 
         return redirect(url_for('homepage'))
 
@@ -52,4 +57,5 @@ class User(db.Model):
 
 if __name__ == "__main__":
     app.debug = True
+    app.secret_key = os.urandom(24)
     app.run()
