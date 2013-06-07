@@ -52,8 +52,11 @@ def homepage():
 
         return redirect(url_for('homepage'))
 
-    else:
-        return render_template("homepage.html")
+    elif request.method == 'GET':
+        if "herokuapp.com" in request.url:
+            return redirect("http://www.roosterapp.co/"), 301
+        else:
+            return render_template("homepage.html")
 
 
 def wrap_minutes(m):
