@@ -67,7 +67,7 @@ class ForecastClient(object):
         current_summary = forecast.get("minutely", {}).get("summary", "")
 
         if current_summary and current_temp and len(overall_summary) < 100:
-            overall_summary = "Currently {temp} and will be {summary} {the_rest}".format(
+            overall_summary = "Currently {temp}, {summary} {the_rest}".format(
                 temp=self.format_temperature(current_temp),
                 summary=current_summary.lower(),
                 the_rest=overall_summary
