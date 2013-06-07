@@ -11,7 +11,6 @@ $(document).ready(function(){
 
     $("#time-zone").change(function(event){
         var $target = $(event.target);
-        console.log($target);
         $("#utc-helper").html($target.val());
     });
 
