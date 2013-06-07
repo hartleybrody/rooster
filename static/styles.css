@@ -19,11 +19,6 @@ body{
 
 }
 
-input {
-    font-size: 1.2em;
-    line-height: 1.3em;
-}
-
 h1, h2 {
     font-family: "Lobster", serif;
 }
@@ -32,8 +27,8 @@ h3, h4, h5 {
 }
 
 h1 {
-    font-size: 110px;
-    line-height: 130px;
+    font-size: 8em;
+    line-height: 1em;
 }
 
 .help-block{
