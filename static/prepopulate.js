@@ -2,11 +2,17 @@ $(document).ready(function(){
     $.ajax({
         dataType: "json",
         url: "http://freegeoip.net/json/",
-        //data: data,
         success: function(data, status, xhr){
             var client_zip = data["zipcode"];
             $("#zipcode-helper").html(client_zip);
         }
+    });
+
+
+    $("#time-zone").change(function(event){
+        var $target = $(event.target);
+        console.log($target);
+        $("#utc-helper").html($target.val());
     });
 
     // set timezone
@@ -17,5 +23,12 @@ $(document).ready(function(){
         var offset_str = "-" + offset;
     }
     $("#time-zone").val(offset_str);
-    $("#utc-helper").html(offset_str);
+    $("#time-zone").change();
+
+
+    $("#manually-edit-offset").click( function(){
+        $("#time-zone").toggleClass("hidden");
+        $("#manually-edit-offset").toggleClass("hidden");
+        return false;
+    })
 })

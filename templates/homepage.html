@@ -96,9 +96,36 @@
                                 <span class="help-block visible-phone">AM/PM</span>
                             </div>
                             <div class="span2">
-                                <input type="hidden" class="span1 hidden" id="time-zone" name="time-zone">   
-                                <span class="help-block muted" style="position:relative; top:5px;">
-                                    [UTC Offset: <span id="utc-helper"></span>]
+                                <select class="span1 hidden" id="time-zone" name="time-zone">
+                                    <option value="-12">-12:00</option>
+                                    <option value="-11">-11:00</option>
+                                    <option value="-10">-10:00</option>
+                                    <option value="-9">-9:00</option>
+                                    <option value="-8">-8:00</option>
+                                    <option value="-7">-7:00</option>
+                                    <option value="-6">-6:00</option>
+                                    <option value="-5">-5:00</option>
+                                    <option value="-4">-4:00</option>
+                                    <option value="-3">-3:00</option>
+                                    <option value="-2">-2:00</option>
+                                    <option value="-1">-1:00</option>
+                                    <option value="+0">+0:00</option>
+                                    <option value="+1">+1:00</option>
+                                    <option value="+2">+2:00</option>
+                                    <option value="+3">+3:00</option>
+                                    <option value="+4">+4:00</option>
+                                    <option value="+5">+5:00</option>
+                                    <option value="+6">+6:00</option>
+                                    <option value="+7">+7:00</option>
+                                    <option value="+8">+8:00</option>
+                                    <option value="+9">+9:00</option>
+                                    <option value="+10">+10:00</option>
+                                    <option value="+11">+11:00</option>
+                                    <option value="+12">+12:00</option>
+                                </select>  
+                                <span class="help-block muted">
+                                    UTC Offset: <span id="utc-helper">0</span>:00<br>
+                                    <a href="#" id="manually-edit-offset">Edit</a>
                                 </span>
                             </div>
                         </div>
