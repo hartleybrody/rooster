@@ -3,8 +3,12 @@ $(document).ready(function(){
         dataType: "json",
         url: "http://freegeoip.net/json/",
         success: function(data, status, xhr){
-            var client_zip = data["zipcode"];
-            $("#zipcode-helper").html(client_zip);
+            if (data["country_code"] == "US"){
+                var location_suggestion = data["city"] + ", " + data["region_code"];
+            } else{
+                var location_suggestion = data["city"] + ", " + data["country_name"];
+            }
+            $("#location-helper").html(location_suggestion);
         }
     });
 

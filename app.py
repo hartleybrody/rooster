@@ -24,7 +24,7 @@ def homepage():
     if request.method == 'POST':
         data = {
             "phone": request.form.get("phone"),
-            "zipcode": request.form.get("zipcode"),
+            "location": request.form.get("location"),
             "alarm_hour": request.form.get("alarm-hour"),
             "alarm_minute": request.form.get("alarm-minute"),
             "alarm_meridian": request.form.get("alarm-meridian"),
@@ -77,16 +77,18 @@ class User(db.Model):
 
     id =                db.Column(db.Integer, primary_key=True)
     phone =             db.Column(db.String(30), unique=True)
-    zipcode =           db.Column(db.String(8))
+    is_active =         db.Column(db.Boolean, default=True)
+
     alarm_hour =        db.Column(db.String(2))
     alarm_minute =      db.Column(db.String(2))
     alarm_meridian =    db.Column(db.String(2))
     time_zone =         db.Column(db.String(3))
-    is_active =         db.Column(db.Boolean, default=True)
 
-    def __init__(self, phone, zipcode, alarm_hour, alarm_minute, alarm_meridian, time_zone):
+    location =          db.Column(db.String(64))
+
+    def __init__(self, phone, location, alarm_hour, alarm_minute, alarm_meridian, time_zone):
         self.phone = phone
-        self.zipcode = zipcode
+        self.location = location
         self.alarm_hour = alarm_hour
         self.alarm_minute = alarm_minute
         self.alarm_meridian = alarm_meridian
@@ -160,7 +162,7 @@ class User(db.Model):
         from forecast import ForecastClient
 
         g = GeoCodingClient()
-        geo_info = g.lookup_zipcode(self.zipcode)
+        geo_info = g.lookup_location(self.location)
 
         latitude = geo_info["results"][0]["geometry"]["location"]["lat"]
         longitude = geo_info["results"][0]["geometry"]["location"]["lng"]

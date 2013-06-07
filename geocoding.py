@@ -12,11 +12,11 @@ class GeoCodingClient(object):
     def __init__(self):
         super(GeoCodingClient, self).__init__()
 
-    def lookup_zipcode(self, zipcode):
+    def lookup_location(self, location):
 
         endpoint = "https://maps.googleapis.com/maps/api/geocode/json"
         params = {
-            "address": zipcode,
+            "address": location,
             "sensor": "false"
         }
 
@@ -26,4 +26,4 @@ class GeoCodingClient(object):
 
 if __name__ == "__main__":
     g = GeoCodingClient()
-    print g.lookup_zipcode("02139")
+    print g.lookup_location("02139")
