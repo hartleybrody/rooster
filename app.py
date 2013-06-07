@@ -137,10 +137,10 @@ class User(db.Model):
         minutes_range = range(current_utc_offset_minutes - 10, current_utc_offset_minutes + 10)
         minutes_range = map(wrap_minutes, minutes_range)
 
-        if self.alarm_minute not in minutes_range:
+        if self.alarm_minute in minutes_range:
+            return True
+        else:
             return False
-
-        return True
 
     def send_message(self):
         """
@@ -174,6 +174,7 @@ class User(db.Model):
         text = Text(user=self, message=forecast)
         db.session.add(text)
         db.session.commit()
+
         return True
 
 
