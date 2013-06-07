@@ -6,6 +6,9 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 from raven.contrib.flask import Sentry
 
+from twilio import TwilioClient
+from forecast import ForecastClient
+from geocoding import GeoCodingClient
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -85,6 +88,8 @@ class User(db.Model):
     time_zone =         db.Column(db.String(3))
 
     location =          db.Column(db.String(64))
+    latitude =          db.Column(db.String(24), default="")
+    longitude =         db.Column(db.String(24), default="")
 
     def __init__(self, phone, location, alarm_hour, alarm_minute, alarm_meridian, time_zone):
         self.phone = phone
@@ -149,23 +154,29 @@ class User(db.Model):
         Send this user their forecast
         """
 
+        # ensure we didn't already text this person today
         today = datetime.utcnow().date()
         texts = Text.query.filter(Text.user_id == self.id).all()
-
         for text in texts:
             if text.sent.date() == today:
-                print "already texted this user today"
                 return False
 
-        from geocoding import GeoCodingClient
-        from twilio import TwilioClient
-        from forecast import ForecastClient
+        if self.latitude == "" or self.longitude == "":
 
-        g = GeoCodingClient()
-        geo_info = g.lookup_location(self.location)
+            g = GeoCodingClient()
+            geo_info = g.lookup_location(self.location)
 
-        latitude = geo_info["results"][0]["geometry"]["location"]["lat"]
-        longitude = geo_info["results"][0]["geometry"]["location"]["lng"]
+            latitude = geo_info["results"][0]["geometry"]["location"]["lat"]
+            longitude = geo_info["results"][0]["geometry"]["location"]["lng"]
+
+            # save this lat/lon info so we don't need to look up each time
+            self.latitude = latitude
+            self.longitude = longitude
+            db.session.add(self)
+
+        else:
+            latitude = self.latitude
+            longitude = self.longitude
 
         f = ForecastClient()
         forecast = f.get_forecast(latitude, longitude)
