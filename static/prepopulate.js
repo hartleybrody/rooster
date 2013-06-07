@@ -17,4 +17,5 @@ $(document).ready(function(){
         var offset_str = "-" + offset;
     }
     $("#time-zone").val(offset_str);
+    $("#utc-helper").html(offset_str);
 })
