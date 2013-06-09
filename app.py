@@ -62,6 +62,14 @@ def homepage():
             return render_template("homepage.html")
 
 
+@app.route("/message/receive/", methods=['GET', 'POST'])
+def process_inbound_message():
+    app.logger.debug("incoming message")
+    app.logger.debug(request.data)
+    app.logger.debug(request.form)
+    app.logger.debug(request.json)
+    return ""
+
 def wrap_minutes(m):
     """
     Make sure the minutes in minutes_range stay between 0 and 59.
@@ -72,6 +80,11 @@ def wrap_minutes(m):
         return m - 60
     else:
         return m
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # Models # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 
 class User(db.Model):
