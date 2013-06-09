@@ -77,10 +77,9 @@ def process_inbound_message():
         return "Send me messages! http://www.twilio.com/help/faq/sms"
 
     print "incoming message"
-    print dict(request.form)
 
     message_number = re.sub("[^\d.]", "", request.form.get("From", ""))
-    message_body = request.form.get("Body").strip().lower()
+    message_body = request.form.get("Body").strip()
 
     print "from %s" % message_number
     print message_body
@@ -103,25 +102,29 @@ def process_inbound_message():
 
     reactivate_keywords = ["start", "yes"]
     for word in reactivate_keywords:
-        if word in message_body:
+        if word in message_body.lower():
             user.is_active = True
             actions_performed.append("reactivated your account")
 
     deactivate_keywords = ["stop", "block", "cancel", "unsubscribe", "quit"]
     for word in deactivate_keywords:
-        if word in message_body:
+        if word in message_body.lower():
             user.is_active = False
             actions_performed.append("deactivated your account")
 
-    if "location:" in message_body:
-        location = message_body.split("location:")[1].strip()
+    location_index = message_body.lower().find("location:")
+    if location_index != -1:
+        location_offset = location_index + len("location:")
+        location = message_body[location_offset:].strip()
         user.location = location
         user.latitude = ""
         user.longitude = ""
         actions_performed.append("updated location to %s" % location)
 
-    if "time:" in message_body:
-        time = message_body.split("time:")[1].strip()
+    time_index = message_body.lower().find("time:")
+    if time_index != -1:
+        time_offset = time_index + len("time:")
+        time = message_body[time_offset:].strip()
 
         try:
             hour, minute, meridian, timezone = pase_time(time)
