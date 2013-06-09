@@ -26,6 +26,8 @@ sentry = Sentry(app)
 # config logging
 l = logging.StreamHandler(sys.stdout)
 l.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+l.setFormatter(formatter)
 app.logger.addHandler(l)
 
 
@@ -72,7 +74,7 @@ def homepage():
 @app.route("/message/receive/", methods=['GET', 'POST'])
 def process_inbound_message():
     app.logger.info("incoming message")
-    app.logger.info("incoming message")
+
     app.logger.info(request.data)
     app.logger.info(request.form)
     app.logger.info(request.json)
