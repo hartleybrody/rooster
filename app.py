@@ -92,9 +92,14 @@ def process_inbound_message():
     t = TwilioClient()
 
     if user is None:
-        message = "Couldn't find %s in our system. Go to http://www.roosterapp.co to sign up!" % (message_number)
-        t.send_message(to=message_number, message=message)
-        return message
+
+        if message_number.startswith("1"):  # see if an american forgot to sign up w their country code
+            user = User.query.filter(User.phone == message_number[1:]).first()
+
+        if user is None:
+            message = "Couldn't find %s in our system. Go to http://www.roosterapp.co to sign up!" % (message_number)
+            t.send_message(to=message_number, message=message)
+            return message
 
     reactivate_keywords = ["start", "yes"]
     for word in reactivate_keywords:
