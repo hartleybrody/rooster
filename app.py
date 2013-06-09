@@ -104,13 +104,13 @@ def process_inbound_message():
     for word in reactivate_keywords:
         if word in message_body.lower():
             user.is_active = True
-            actions_performed.append("reactivated your account")
+            actions_performed.append("reactivated your account. Welcome back!")
 
     deactivate_keywords = ["stop", "block", "cancel", "unsubscribe", "quit"]
     for word in deactivate_keywords:
         if word in message_body.lower():
             user.is_active = False
-            actions_performed.append("deactivated your account")
+            actions_performed.append("deactivated your account. Send 'START' to reactive.")
 
     location_index = message_body.lower().find("location:")
     if location_index != -1:
@@ -157,7 +157,7 @@ def process_inbound_message():
         message = "Successfully " + ", ".join(actions_performed)
 
     else:
-        message = "Options are:\n'LOCATION:' with a town, region or postal code\n'TIME:' formatted HH:MM where hours are in 24hr format\n'OFFSET:' for timezone, ie -4\n'STOP' to opt-out"
+        message = "Options:\n'LOCATION:' with a town, region or postal code\n'TIME:' formatted HH:MM where hours are in 24hr format\n'OFFSET:' for timezone, ie -4\n'STOP' to pause"
 
     print message
     user.send_message(message)
