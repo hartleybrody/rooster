@@ -26,9 +26,11 @@ sentry = Sentry(app)
 # config logging
 l = logging.StreamHandler(sys.stdout)
 l.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-l.setFormatter(formatter)
 app.logger.addHandler(l)
+
+print app.logger.handlers
+print "print test test test"
+app.logger.critical("logger test test test")
 
 
 @app.route("/", methods=['GET', 'POST'])
