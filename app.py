@@ -75,6 +75,9 @@ def homepage():
 @app.route("/message/receive/", methods=['GET', 'POST'])
 def process_inbound_message():
 
+    if request.method == "GET":
+        return "Send me messages! http://www.twilio.com/help/faq/sms"
+
     print "incoming message"
     print dict(request.form)
 
