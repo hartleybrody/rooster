@@ -29,8 +29,6 @@ l = logging.StreamHandler(sys.stdout)
 l.setLevel(logging.DEBUG)
 app.logger.addHandler(l)
 
-print "test print test"
-
 
 @app.route("/", methods=['GET', 'POST'])
 def homepage():
