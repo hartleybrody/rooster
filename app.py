@@ -28,9 +28,7 @@ l = logging.StreamHandler(sys.stdout)
 l.setLevel(logging.DEBUG)
 app.logger.addHandler(l)
 
-print app.logger.handlers
-print "print test test test"
-app.logger.critical("logger test test test")
+print "test print test"
 
 
 @app.route("/", methods=['GET', 'POST'])
@@ -75,11 +73,11 @@ def homepage():
 
 @app.route("/message/receive/", methods=['GET', 'POST'])
 def process_inbound_message():
-    app.logger.info("incoming message")
+    print "incoming message"
 
-    app.logger.info(request.data)
-    app.logger.info(request.form)
-    app.logger.info(request.json)
+    print request.data
+    print request.form
+    print request.json
     return ""
 
 def wrap_minutes(m):
