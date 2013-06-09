@@ -137,7 +137,7 @@ def process_inbound_message():
         message = "Successfully", ", ".join(actions_performed)
 
     else:
-        message = "We couldn't understand your request."
+        message = "Options are:\n'LOCATION:' <new location>.\n'TIME:' <format: HH:MM TZ> where hours are in 24hr format"
 
     print message
     user.send_message(message)

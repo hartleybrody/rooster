@@ -29,11 +29,13 @@ class TwilioClient(object):
         }
 
         r = requests.post(endpoint, auth=(self.ACCOUNT_SID, self.AUTH_TOKEN), data=data)
+        response = json.loads(r.text)
 
         if r.status_code not in [200, 201]:
-            raise Exception("Twilio refused the messages")
+            print response
+            raise Exception("Twilio refused the messages: %s" % response.get("message"))
 
-        return json.loads(r.text)
+        return response
 
 
 if __name__ == "__main__":
