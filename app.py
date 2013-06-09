@@ -164,7 +164,7 @@ def process_inbound_message():
         message = "Successfully " + ", ".join(actions_performed)
 
     else:
-        message = "Options:\n'LOCATION:' with a town, region or postal code\n'TIME:' formatted HH:MM where hours are in 24hr format\n'OFFSET:' for timezone, ie -4\n'STOP' to pause"
+        message = "Reply w:\n'LOCATION:' with a town, region or postal code\n'TIME:' formatted HH:MM where hours are in 24hr format\n'OFFSET:' for timezone, ie -4\n'STOP' to pause"
 
     print message
     user.send_message(message)
@@ -172,7 +172,7 @@ def process_inbound_message():
 
 
 def pase_time(t):
-    # must be in format HH:MM TZ and minute must be a multiple of 15
+    # must be in format HH:MM and minute must be a multiple of 15
     time = t.strip()
 
     try:
@@ -195,6 +195,7 @@ def pase_time(t):
         meridian = "am"
 
     return hour, minute, meridian
+
 
 def wrap_minutes(m):
     """
