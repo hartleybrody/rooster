@@ -137,12 +137,12 @@ def process_inbound_message():
             errors_encountered.append(e)
 
     if errors_encountered:
-        message = "Uh oh!", ", ".join(errors_encountered)
+        message = "Uh oh! " + ", ".join(errors_encountered)
 
     elif actions_performed:
         db.session.add(user)
         db.session.commit()
-        message = "Successfully", ", ".join(actions_performed)
+        message = "Successfully " + ", ".join(actions_performed)
 
     else:
         message = "Options are:\n'LOCATION:' with a town, region or postal code.\n'TIME:' formatted like HH:MM TZ where hours are in 24hr format"
