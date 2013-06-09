@@ -126,6 +126,7 @@ def process_inbound_message():
         user.location = location
         user.latitude = ""
         user.longitude = ""
+        user.is_active = True
         actions_performed.append("updated location to %s" % location)
 
     time_index = message_body.lower().find("time:")
@@ -138,6 +139,7 @@ def process_inbound_message():
             user.alarm_hour = hour
             user.alarm_minute = minute
             user.alarm_meridian = meridian
+            user.is_active = True
             actions_performed.append("updated wake up time to %s" % time)
         except Exception as e:
             errors_encountered.append(str(e))
@@ -150,6 +152,7 @@ def process_inbound_message():
         try:
             assert int(timezone) in range(-11, 13)
             user.time_zone = timezone
+            user.is_active = True
             actions_performed.append("updated time zone to %s" % timezone)
         except:
             errors_encountered.append("timezone %s appears to be invalid" % timezone)
