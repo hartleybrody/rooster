@@ -137,7 +137,7 @@ def process_inbound_message():
         message = "Successfully", ", ".join(actions_performed)
 
     else:
-        message = "Options are:\n'LOCATION:' <new location>.\n'TIME:' <format: HH:MM TZ> where hours are in 24hr format"
+        message = "Options are:\n'LOCATION:' with a town, region or postal code.\n'TIME:' formatted like HH:MM TZ where hours are in 24hr format"
 
     print message
     user.send_message(message)
@@ -154,9 +154,9 @@ def pase_time(t):
 
     try:
         parsed_time_zone = int(time_zone)
-        assert parsed_time_zone in range(-10, 13)
+        assert parsed_time_zone in range(-12, 13)
     except:
-        raise Exception("The timezone you sent (%s) appears to be invalid." % time_zone)
+        raise Exception("The timezone you sent (%s) appears to be invalid. Should be between -12 & +13." % time_zone)
 
     try:
         hour, minute = time.split(":")
