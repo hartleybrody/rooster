@@ -76,8 +76,9 @@ def homepage():
 def process_inbound_message():
 
     print "incoming message"
+    print request.form
 
-    message_number = request.form.get("From").replace("+", "").strip()
+    message_number = re.sub("[^\d.]", "", request.form.get("From", ""))
     message_body = request.form.get("Body").strip().lower()
 
     print "from %s" % message_number
@@ -86,7 +87,7 @@ def process_inbound_message():
     actions_performed = []
     errors_encountered = []
 
-    user = User.query.filter(User.phone in message_number or message_number in User.phone).first()
+    user = User.query.filter(User.phone == message_number).first()
     t = TwilioClient()
 
     if user is None:
@@ -125,19 +126,20 @@ def process_inbound_message():
         except Exception as e:
             errors_encountered.append(e)
 
-    try:
+    if errors_encountered:
+        message = "Uh oh!", ", ".join(errors_encountered)
+
+    elif actions_performed:
         db.session.add(user)
         db.session.commit()
-        success_message = "Successfully", ", ".join(actions_performed)
-        print success_message
-        t.send_message(success_message)
-    except Exception as e:
-        errors_encountered.append(e)
-        failure_message = "Uh oh!", ", ".join(action_performed)
-        print failure_message
-        t.send_message(failure_message)
+        message = "Successfully", ", ".join(actions_performed)
 
-    return ""
+    else:
+        message = "We couldn't understand your request."
+
+    print message
+    t.send_message(message)
+    return message
 
 
 def pase_time(t):
