@@ -129,10 +129,12 @@ def process_inbound_message():
         db.session.add(user)
         db.session.commit()
         success_message = "Successfully", ", ".join(actions_performed)
+        print success_message
         t.send_message(success_message)
     except Exception as e:
         errors_encountered.append(e)
         failure_message = "Uh oh!", ", ".join(action_performed)
+        print failure_message
         t.send_message(failure_message)
 
     return ""
