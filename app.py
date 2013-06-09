@@ -75,9 +75,8 @@ def homepage():
 def process_inbound_message():
     print "incoming message"
 
-    print request.data
-    print request.form
-    print request.json
+    print request.form.get("Body")
+    print request.form.get("From")
     return ""
 
 def wrap_minutes(m):
