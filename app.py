@@ -64,10 +64,11 @@ def homepage():
 
 @app.route("/message/receive/", methods=['GET', 'POST'])
 def process_inbound_message():
-    app.logger.debug("incoming message")
-    app.logger.debug(request.data)
-    app.logger.debug(request.form)
-    app.logger.debug(request.json)
+    app.logger.info("incoming message")
+    app.logger.info("incoming message")
+    app.logger.info(request.data)
+    app.logger.info(request.form)
+    app.logger.info(request.json)
     return ""
 
 def wrap_minutes(m):
