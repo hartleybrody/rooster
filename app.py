@@ -274,7 +274,7 @@ class User(db.Model):
             return False
 
     def send_message(self, message):
-        t = TwilioClient
+        t = TwilioClient()
         t.send_message(to=self.phone, message=message)
 
     def send_forecast(self):
