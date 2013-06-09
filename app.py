@@ -73,11 +73,104 @@ def homepage():
 
 @app.route("/message/receive/", methods=['GET', 'POST'])
 def process_inbound_message():
+
     print "incoming message"
 
-    print request.form.get("Body")
-    print request.form.get("From")
+    message_number = request.form.get("From").replace("+", "").strip()
+    message_body = request.form.get("Body").strip().lower()
+
+    print "from %s" % message_number
+    print message_body
+
+    actions_performed = []
+    errors_encountered = []
+
+    user = User.query.filter(User.phone in message_number or message_number in User.phone).first()
+    t = TwilioClient()
+
+    if user is None:
+        t.send_message("Couldn't fine %s in our system. Go to http://www.roosterapp.co to sign up!" % (message_number))
+        return ""
+
+    reactivate_keywords = ["start", "yes"]
+    for word in reactivate_keywords:
+        if word in message_body:
+            user.is_active = True
+            actions_performed.append("reactivated your account")
+
+    deactivate_keywords = ["stop", "block", "cancel", "unsubscribe", "quit"]
+    for word in deactivate_keywords:
+        if word in message_body:
+            user.is_active = False
+            actions_performed.append("deactivated your account")
+
+    if "location:" in message_body:
+        location = message_body.split("location:")[1].strip()
+        user.location = location
+        user.latitude = ""
+        user.longitude = ""
+        actions_performed.append("updated location to %s" % location)
+
+    if "time:" in message_body:
+        time = message_body.split("time:")[1].strip()
+
+        try:
+            hour, minute, meridian, timezone = pase_time(time)
+            user.alarm_hour = hour
+            user.alarm_minute = minute
+            user.alarm_meridian = meridian
+            user.time_zone = timezone
+            actions_performed.append("updated wake up time to %s" % time)
+        except Exception as e:
+            errors_encountered.append(e)
+
+    try:
+        db.session.add(user)
+        db.session.commit()
+        success_message = "Successfully", ", ".join(actions_performed)
+        t.send_message(success_message)
+    except Exception as e:
+        errors_encountered.append(e)
+        failure_message = "Uh oh!", ", ".join(action_performed)
+        t.send_message(failure_message)
+
     return ""
+
+
+def pase_time(t):
+    # must be in format HH:MM TZ and minute must be a multiple of 15
+    t.strip()
+    try:
+        time, time_zone = t.split(" ")
+    except:
+        raise Exception("That date format is invalid. It should be HH:MM TZ")
+
+    try:
+        parsed_time_zone = int(time_zone)
+        assert parsed_time_zone in range(-10, 13)
+    except:
+        raise Exception("The timezone you sent (%s) appears to be invalid." % time_zone)
+
+    try:
+        hour, minute = time.split(":")
+        parsed_hour = int(hour)
+        parsed_minute = int(minute)
+        assert parsed_hour in range(0, 24)
+    except:
+        raise Exception("The time you sent (%s) appears to be invalid" % time)
+
+    try:
+        assert minute in ["00", "15", "30", "45"]
+    except:
+        raise Exception("The minutes must be either '00', '15', '30', '45', not %s" % minute)
+
+    if parsed_hour > 12:
+        meridian = "pm"
+        parsed_hour = parsed_hour - 12
+    else:
+        meridian = "am"
+
+    return hour, minute, meridian, time_zone
 
 def wrap_minutes(m):
     """
