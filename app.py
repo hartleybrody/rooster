@@ -1,4 +1,6 @@
 import os
+import sys
+import logging
 from datetime import datetime, time
 
 from flask import Flask, render_template, request, redirect, url_for, flash
@@ -20,6 +22,11 @@ db = SQLAlchemy(app)
 # config sentry
 app.config['SENTRY_DSN'] = os.environ['SENTRY_DSN']
 sentry = Sentry(app)
+
+# config logging
+l = logging.StreamHandler(sys.stdout)
+l.setLevel(logging.DEBUG)
+app.logger.addHandler(l)
 
 
 @app.route("/", methods=['GET', 'POST'])
