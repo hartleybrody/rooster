@@ -8,7 +8,7 @@ def send_texts():
         if user.is_active and user.needs_message_now():
             print "%s needs forecast" % user
             try:
-                sent = user.send_message()
+                sent = user.send_forecast()
                 if sent:
                     print "sent forecast to %s" % user
                 else:

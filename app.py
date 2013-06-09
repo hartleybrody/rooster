@@ -91,8 +91,9 @@ def process_inbound_message():
     t = TwilioClient()
 
     if user is None:
-        t.send_message("Couldn't fine %s in our system. Go to http://www.roosterapp.co to sign up!" % (message_number))
-        return ""
+        message = "Couldn't find %s in our system. Go to http://www.roosterapp.co to sign up!" % (message_number)
+        t.send_message(to=message_number, message=message)
+        return message
 
     reactivate_keywords = ["start", "yes"]
     for word in reactivate_keywords:
@@ -138,7 +139,7 @@ def process_inbound_message():
         message = "We couldn't understand your request."
 
     print message
-    t.send_message(message)
+    user.send_message(message)
     return message
 
 
@@ -269,7 +270,11 @@ class User(db.Model):
         else:
             return False
 
-    def send_message(self):
+    def send_message(self, message):
+        t = TwilioClient
+        t.send_message(to=self.phone, message=message)
+
+    def send_forecast(self):
         """
         Send this user their forecast
         """
