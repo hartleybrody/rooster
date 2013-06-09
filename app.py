@@ -35,7 +35,7 @@ print "test print test"
 def homepage():
     if request.method == 'POST':
         data = {
-            "phone": request.form.get("phone").replace(" ", "").replace("-", "").replace("(", "").replace(")", ""),
+            "phone": request.form.get("phone").replace(" ", "").replace("-", "").replace("(", "").replace(")", "").replace("+", ""),
             "location": request.form.get("location"),
             "alarm_hour": request.form.get("alarm-hour"),
             "alarm_minute": request.form.get("alarm-minute"),
