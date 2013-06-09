@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import logging
 from datetime import datetime, time
@@ -35,7 +36,7 @@ print "test print test"
 def homepage():
     if request.method == 'POST':
         data = {
-            "phone": request.form.get("phone").replace(" ", "").replace("-", "").replace("(", "").replace(")", "").replace("+", ""),
+            "phone": re.sub("[^\d.]", "", request.form.get("phone", "")),
             "location": request.form.get("location"),
             "alarm_hour": request.form.get("alarm-hour"),
             "alarm_minute": request.form.get("alarm-minute"),
