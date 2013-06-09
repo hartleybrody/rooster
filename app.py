@@ -76,7 +76,7 @@ def homepage():
 def process_inbound_message():
 
     print "incoming message"
-    print request.form
+    print dict(request.form)
 
     message_number = re.sub("[^\d.]", "", request.form.get("From", ""))
     message_body = request.form.get("Body").strip().lower()
