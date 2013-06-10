@@ -12,7 +12,7 @@ body{
 
 #signup-area{
     margin-top: 100px;
-    padding: 0px 5px;
+    padding: 5px;
 
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 2px;
@@ -30,6 +30,12 @@ h3, h4, h5 {
 h1 {
     font-size: 8em;
     line-height: 1em;
+}
+@media (max-width: 480px) { 
+    h1{
+        font-size: 4em;
+        line-height: 1em;
+    }
 }
 
 .help-block{
