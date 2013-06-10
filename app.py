@@ -3,7 +3,7 @@ import re
 import sys
 import json
 import logging
-from datetime import datetime, time
+from datetime import datetime, time, timedelta
 
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -259,14 +259,6 @@ class User(db.Model):
         if utc_now.weekday() in [5, 6]:
             return False  # don't send on weekends
 
-        # get the current number of seconds since the beginning of the day in UTC
-        midnight_utc = datetime.combine(utc_now.date(), time(0))
-        delta = utc_now - midnight_utc
-
-        current_utc_offset_seconds = int(delta.total_seconds())
-        current_utc_offset_hours = current_utc_offset_seconds / (60 * 60)
-        current_utc_offset_minutes = (current_utc_offset_seconds - (60 * 60 * current_utc_offset_hours)) / 60
-
         # figure out the hour they wanted to wake up
         alarm_hour = int(self.alarm_hour)
         if self.alarm_meridian.lower() == "pm":
@@ -285,17 +277,19 @@ class User(db.Model):
         elif desired_alarm_hour < 0:
             desired_alarm_hour += 24
 
-        if desired_alarm_hour != current_utc_offset_hours:
-            return False
+        # build a datetime object representing their desired wakeup time in UTC
+        today = datetime.today()
+        todays_desired_alarm_time = datetime(
+            hour=desired_alarm_hour,
+            minute=int(self.alarm_minute),
+            year=today.year,
+            month=today.month,
+            day=today.day
+        )
 
-        # allow a bit of variance in the minutes
-        minutes_range = range(current_utc_offset_minutes - 10, current_utc_offset_minutes + 10)
-        minutes_range = map(wrap_minutes, minutes_range)
-
-        if int(self.alarm_minute) in minutes_range:
+        margin_of_error = timedelta(seconds=60*8)  # 8 minutes in either direction (16m window total)
+        if utc_now - margin_of_error < todays_desired_alarm_time < utc_now + margin_of_error:
             return True
-        else:
-            return False
 
     def send_message(self, message):
         t = TwilioClient()
