@@ -176,6 +176,16 @@ def process_inbound_message():
         db.session.commit()
         message = "Successfully " + ", ".join(actions_performed)
 
+    elif "status" in message_body.lower():
+        message = "Current account status:\nACTIVE: {is_active}\nLOCATION: {location}\nTIME: {hour}:{minute}{meridian}\nTZ:{timezone}".format(
+            is_active=user.is_active,
+            location=user.location,
+            hour=user.alarm_hour,
+            minute=user.alarm_minute,
+            meridian=user.alarm_meridian,
+            timezone=user.time_zone
+        )
+
     else:
         message = "Reply w:\n'LOCATION:' with a town, region or postal code\n'TIME:' formatted HH:MM where hours are in 24hr format\n'TZ:' for timezone, ie -4\n'STOP' to pause"
 
