@@ -133,7 +133,10 @@
                         <hr />
 
                         <div class="row">
-                            <div class="span4 text-center">
+                            <div class="span1 text-center">
+                                <h4><a href="#faqModal" role="button" data-toggle="modal">FAQ</a></h4>
+                            </div>
+                            <div class="span3 text-center">
                                 <small class="muted hidden-phone">
                                     Built by <a href="https://twitter.com/hartleybrody" target="_blank">Hartley Brody</a>.
                                     Image via <a href="http://www.flickr.com/photos/9242564@N07/6868613488/in/photostream/" target="_blank">Flickr</a>.<br>
@@ -148,12 +151,66 @@
 
                 </div>
             </div>
+            <!-- Button to trigger modal -->
+
+ 
+<!-- Modal -->
+<div id="faqModal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Frequently Asked Questions</h3>
+    </div>
+    <div class="modal-body">
+        <h5>What kinds of messages will I get?</h5>
+        <p class="hidden">
+            The app will text you once a day with your local forecast. Here's an example:
+            <blockquote style="font-size:0.9em" class="hidden">
+                Currently 69, overcast for the hour. Rain starting this evening. High of 70 at 4pm.
+            </blockquote>
+        </p>
+        <h5>Where in the world does this work?</h5>
+        <p class="hidden">
+            Theoretically, anywhere. The location information you provide is turned into latitiude/longitude using <a href="https://developers.google.com/maps/documentation/geocoding/" target="_blank">Google's Geocoding API</a>, and that information is then sent to <a href="https://developer.forecast.io/" target="_blank">Forecast.io</a> which aggregates weather reports from <a href="http://forecast.io/raw/" target="_blank">over a dozen sources</a>. Termperatures are all in Fahrenheit though, sorry.
+        </p>
+        <h5>How much does this cost?</h5>
+        <p class="hidden">
+            As with any SMS-based service, your carrier may charge you for sending/receiving messages. We don't charge any fees though. If your plan includes unlimited texting, then we're totally free for you!
+        </p>
+        <h5>What if I want to unsubscribe or stop receiving messages?</h5>
+        <p class="hidden">
+            Simply reply to any of our messages with "STOP" and we'll immediately deactivate your account and stop sending you messages.
+        </p>
+        <h5>How do I update my location, wake up time, or timezone?</h5>
+        <p class="hidden">
+            Rooster App is entirely SMS based, so there's no need for logins or even providing an email! You can update your location, wake up time and timezone by texting them to us. Reply to any of our messages with "OPTIONS" to see the keywords.
+        </p>
+        <h5>This is dumb. There are already a million apps that do this.</h5>
+        <p class="hidden">
+            Not really a question, but I'll take a stab at it. I built Rooster App as a fun project for myself, but also because I wanted to break out of the mold that says everything needs to be delivered via web browser or smart phone. Tons of people in the world don't have smart phones or reliable internet access, but still have more basic things like email and SMS. Right now, this website is only used for signup &amp; FAQ, but I'm hoping to move all of that to be SMS based as well.
+        </p>
+        <h5>How do I find out more?</h5>
+        <p class="hidden">
+            The <a href="https://github.com/hartleybrody/rooster" target="_blank">code for Rooster App is entirely available on Github</a> for browsing, and I'm pretty <a href="https://twitter.com/hartleybrody/" target="_blank">easy to reach on Twitter</a>. If you think I'd be an asset to your team or project, shoot me an email at hartley.brody@gmail.com and I'd love to chat :)
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
+</div>
 
         </div>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
         <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
         <script src="/static/prepopulate.js"></script>
+        <script>
+        $(".modal-body h5").click( function(event){
+            var $headline = $(event.target);
+            var $paragraph = $headline.next("p");
+            $paragraph.toggleClass("hidden");
+            $paragraph.next("blockquote").toggleClass("hidden");
+        });
+        </script>
 
         <script>
           (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

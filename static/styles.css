@@ -35,3 +35,10 @@ h1 {
 .help-block{
     font-size: 0.8em;
 }
+
+.modal-body p{
+    font-size: 0.9em;
+}
+.modal-body h5{
+    cursor: pointer;
+}
