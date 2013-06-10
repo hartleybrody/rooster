@@ -5,9 +5,6 @@ def send_texts():
 
     users = User.query.all()
     for user in users:
-        print
-        print user.is_active
-        print user.needs_message_now()
         if user.is_active and user.needs_message_now():
             print "%s needs forecast" % user
             try:

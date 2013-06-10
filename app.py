@@ -254,10 +254,8 @@ class User(db.Model):
         """
         Should we text the user right now?
         """
-        print "deciding for %s" % self.phone
 
         utc_now = datetime.utcnow()
-        print utc_now
         if utc_now.weekday() in [5, 6]:
             return False  # don't send on weekends
 
@@ -268,9 +266,6 @@ class User(db.Model):
         current_utc_offset_seconds = int(delta.total_seconds())
         current_utc_offset_hours = current_utc_offset_seconds / (60 * 60)
         current_utc_offset_minutes = (current_utc_offset_seconds - (60 * 60 * current_utc_offset_hours)) / 60
-
-        print current_utc_offset_hours
-        print current_utc_offset_minutes
 
         # figure out the hour they wanted to wake up
         alarm_hour = int(self.alarm_hour)
@@ -297,10 +292,7 @@ class User(db.Model):
         minutes_range = range(current_utc_offset_minutes - 10, current_utc_offset_minutes + 10)
         minutes_range = map(wrap_minutes, minutes_range)
 
-        print desired_alarm_hour
-        print minutes_range
-
-        if self.alarm_minute in minutes_range:
+        if int(self.alarm_minute) in minutes_range:
             return True
         else:
             return False
