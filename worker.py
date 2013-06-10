@@ -1,19 +1,21 @@
-from app import User, sentry
+from app import User, sentry, app
 
 
 def send_texts():
 
     users = User.query.all()
     for user in users:
+        print
         if user.is_active and user.needs_message_now():
-            print "%s needs forecast" % user
+            app.logger.info("%s needs forecast" % user)
             try:
                 sent = user.send_forecast()
                 if sent:
-                    print "sent forecast to %s" % user
+                    app.logger.info("sent forecast to %s" % user)
                 else:
-                    print "didn't send forecast to %s" % user
-            except:
+                    app.logger.info("didn't send forecast to %s" % user)
+            except Exception as e:
+                print e
                 sentry.captureException()
 
 
