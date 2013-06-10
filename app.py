@@ -1,6 +1,7 @@
 import os
 import re
 import sys
+import json
 import logging
 from datetime import datetime, time
 
@@ -33,6 +34,10 @@ app.logger.addHandler(l)
 @app.route("/", methods=['GET', 'POST'])
 def homepage():
     if request.method == 'POST':
+
+        print "new signup"
+        print json.dumps(request.form)
+
         data = {
             "phone": re.sub("[^\d.]", "", request.form.get("phone", "")),
             "location": request.form.get("location"),
