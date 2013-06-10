@@ -187,7 +187,7 @@ def process_inbound_message():
         )
 
     else:
-        message = "Reply w:\n'LOCATION:' with a town, region or postal code\n'TIME:' formatted HH:MM where hours are in 24hr format\n'TZ:' for timezone, ie -4\n'STOP' to pause"
+        message = "Reply w:\n'LOCATION:' with a town or region\n'TIME:' formatted HH:MM (in 24hr format)\n'TZ:' timezone offset, ie -4\n'STOP' to stop\n'STATUS' for current acct info"
 
     print message
     user.send_message(message)
