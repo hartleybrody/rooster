@@ -205,18 +205,6 @@ def parse_time(t):
     return hour, minute, meridian
 
 
-def wrap_minutes(m):
-    """
-    Make sure the minutes in minutes_range stay between 0 and 59.
-    """
-    if m < 0:
-        return m + 60
-    elif m > 59:
-        return m - 60
-    else:
-        return m
-
-
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # # # # # # # # # # # # # # # # # # # # # # Models # # # # # # # # # # # # # # # # # # # # # #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
