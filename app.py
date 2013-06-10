@@ -135,7 +135,7 @@ def process_inbound_message():
         time = message_body[time_offset:].strip()
 
         try:
-            hour, minute, meridian = pase_time(time)
+            hour, minute, meridian = parse_time(time)
             user.alarm_hour = hour
             user.alarm_minute = minute
             user.alarm_meridian = meridian
@@ -174,7 +174,7 @@ def process_inbound_message():
     return message
 
 
-def pase_time(t):
+def parse_time(t):
     # must be in format HH:MM and minute must be a multiple of 15
     time = t.strip()
 
