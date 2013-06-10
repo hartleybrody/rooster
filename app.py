@@ -59,7 +59,7 @@ def homepage():
             db.session.commit()
             flash("Cock-a-doodle-doo! You should get a confirmation text in a few seconds.", "success")
             u.send_message(
-                "Thanks for signing up with Rooster App! Your forecasts will be delivered at {hr}:{min} {mer} Mon-Fri. Reply 'STOP' to pause messages, 'OPTIONS' to change settings.".format(
+                "Thanks for signing up with Rooster App! Your forecasts will be delivered at {hr}:{min}{mer} Mon-Fri. Reply 'STOP' to pause messages, 'OPTIONS' to change settings.".format(
                     hr=u.alarm_hour,
                     min=u.alarm_minute,
                     mer=u.alarm_meridian
