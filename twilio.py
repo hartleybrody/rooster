@@ -21,6 +21,9 @@ class TwilioClient(object):
         if len(message) > 160:
             raise Exception("Message is too long ({} chars)".format(len(message)))
 
+        if not to.startswith("+"):
+            to = "+" + str(to)
+
         endpoint = "https://api.twilio.com/2010-04-01/Accounts/{acct_sid}/SMS/Messages.json".format(acct_sid=self.ACCOUNT_SID)
         data = {
             "From": self.PHONE_NUM,
