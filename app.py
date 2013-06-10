@@ -112,18 +112,21 @@ def process_inbound_message():
             t.send_message(to=message_number, message=message)
             return message
 
+    # reactivate account
     reactivate_keywords = ["start", "yes"]
     for word in reactivate_keywords:
         if word in message_body.lower():
             user.is_active = True
             actions_performed.append("reactivated your account. Welcome back!")
 
+    # deactivate account
     deactivate_keywords = ["stop", "block", "cancel", "unsubscribe", "quit"]
     for word in deactivate_keywords:
         if word in message_body.lower():
             user.is_active = False
             actions_performed.append("deactivated your account. Send 'START' to reactive.")
 
+    # update location
     location_index = message_body.lower().find("location:")
     if location_index != -1:
         location_offset = location_index + len("location:")
@@ -134,6 +137,7 @@ def process_inbound_message():
         user.is_active = True
         actions_performed.append("updated location to %s" % location)
 
+    # update wake up time
     time_index = message_body.lower().find("time:")
     if time_index != -1:
         time_offset = time_index + len("time:")
@@ -149,9 +153,10 @@ def process_inbound_message():
         except Exception as e:
             errors_encountered.append(str(e))
 
-    timezone_index = message_body.lower().find("offset:")
+    # update timezone
+    timezone_index = message_body.lower().find("tz:")
     if timezone_index != -1:
-        timezone_offset = timezone_index + len("offset:")
+        timezone_offset = timezone_index + len("tz:")
         timezone = message_body[timezone_offset:].strip()
 
         try:
@@ -172,7 +177,7 @@ def process_inbound_message():
         message = "Successfully " + ", ".join(actions_performed)
 
     else:
-        message = "Reply w:\n'LOCATION:' with a town, region or postal code\n'TIME:' formatted HH:MM where hours are in 24hr format\n'OFFSET:' for timezone, ie -4\n'STOP' to pause"
+        message = "Reply w:\n'LOCATION:' with a town, region or postal code\n'TIME:' formatted HH:MM where hours are in 24hr format\n'TZ:' for timezone, ie -4\n'STOP' to pause"
 
     print message
     user.send_message(message)
