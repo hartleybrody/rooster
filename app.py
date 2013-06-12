@@ -157,7 +157,7 @@ def process_inbound_message():
             user.alarm_minute = minute
             user.alarm_meridian = meridian
             user.is_active = True
-            actions_performed.append("updated wake up time to %s" % time)
+            actions_performed.append("updated wake up time to {hour}:{min}{mer}".format(hour=hour, min=minute, mer=meridian))
         except Exception as e:
             errors_encountered.append(str(e))
 
