@@ -51,13 +51,17 @@ def homepage():
             if value is None or value == "":
                 flash("Whoops, don't forget to fill out %s" % key, "error")
                 return redirect(url_for('homepage'))
+            if key == "phone" and len(value) < 10:
+                flash("'%s' is too short to be a phone number. Make sure you include the country code." % value, "error")
+                return redirect(url_for('homepage'))
+            if key == "location" and len(value) < 5:
+                flash("You'll need to be more specific about your location. '%s' isn't much to work with." % value, "error")
+                return redirect(url_for('homepage'))
 
         u = User(**data)
         db.session.add(u)
 
-        try:
-            db.session.commit()
-            flash("Cock-a-doodle-doo! You should get a confirmation text in a few seconds.", "success")
+        try:  # validate the number by sending to it
             u.send_message(
                 "Thanks for signing up with Rooster App! Your forecasts will be delivered at {hr}:{min}{mer} Mon-Fri. Reply 'STOP' to pause messages, 'OPTIONS' to change settings.".format(
                     hr=u.alarm_hour,
@@ -65,6 +69,13 @@ def homepage():
                     mer=u.alarm_meridian
                 )
             )
+        except:
+            flash("Hmm, we're having trouble sending to that phone number. Make sure you include your country code.", "error")
+            return redirect(url_for('homepage'))
+
+        try:  # data has validated, now try saving to DB
+            db.session.commit()
+            flash("Cock-a-doodle-doo! You should get a confirmation text in a few seconds.", "success")
         except IntegrityError:
             try:
                 User.query.filter_by(phone=u.phone)
