@@ -345,7 +345,7 @@ class User(db.Model):
             latitude = self.latitude
             longitude = self.longitude
 
-        f = ForecastClient(time_zone=u.time_zone)
+        f = ForecastClient(time_zone=self.time_zone)
         forecast = f.get_forecast(latitude, longitude)
 
         self.send_message(forecast, "forecast")
