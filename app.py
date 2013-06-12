@@ -254,6 +254,8 @@ class User(db.Model):
     latitude =          db.Column(db.String(24), default="")
     longitude =         db.Column(db.String(24), default="")
 
+    created_on =        db.Column(db.DateTime, default=db.func.now())
+
     def __init__(self, phone, location, alarm_hour, alarm_minute, alarm_meridian, time_zone):
         self.phone = phone
         self.location = location
