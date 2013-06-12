@@ -221,7 +221,7 @@ def parse_time(t):
 
     if parsed_hour > 12:
         meridian = "pm"
-        parsed_hour = parsed_hour - 12
+        hour = parsed_hour - 12
     else:
         meridian = "am"
 
