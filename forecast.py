@@ -11,16 +11,19 @@ class ForecastClient(object):
     """
         A simple client for Forecast.io's API
     """
-    def __init__(self):
+    def __init__(self, time_zone):
         super(ForecastClient, self).__init__()
 
         self.API_KEY = os.environ["FORECAST_API_KEY"]
+        self.desired_time_zone = time_zone
 
     def get_forecast(self, latitude, longitude):
 
         endpoint = "https://api.forecast.io/forecast/{api_key}/{lat},{lon}".format(api_key=self.API_KEY, lat=latitude, lon=longitude)
         r = requests.get(endpoint)
-        return self.interpret_forecast(json.loads(r.text))
+        j = json.loads(r.text)
+        self.forecast_offset = j.get("offset")
+        return self.interpret_forecast(j)
 
     def interpret_forecast(self, forecast):
 
@@ -36,7 +39,7 @@ class ForecastClient(object):
         # add high temp information
         daily_high_temp = -1000
         daily_high_time = None
-        for hour in forecast.get("hourly", {}).get("data", [])[:18]:
+        for hour in forecast.get("hourly", {}).get("data", [])[:24]:
             hour_temp = hour.get("temperature") or -1000
             if hour_temp > daily_high_temp:
                 daily_high_temp = hour_temp
@@ -44,7 +47,7 @@ class ForecastClient(object):
                     daily_high_time = datetime.fromtimestamp(hour.get("time"))
 
         # pretty print the hour of the high temp
-        daily_high_hour = daily_high_time.hour
+        daily_high_hour = self.convert_hour_to_local(daily_high_time.hour)
         if daily_high_hour == 0:
             hour_str = "midnight"
         elif daily_high_hour == 12:
@@ -80,6 +83,10 @@ class ForecastClient(object):
 
         return overall_summary
 
+    def convert_hour_to_local(self, hour):
+        diff = int(self.desired_time_zone) - self.forecast_offset
+        return hour + diff
+
     @staticmethod
     def format_temperature(temp):
         return u"{temp}".format(temp=int(round(temp)))
@@ -87,5 +94,5 @@ class ForecastClient(object):
 
 
 if __name__ == "__main__":
-    f = ForecastClient()
+    f = ForecastClient("-4")
     print f.get_forecast(42.36, -71.10)
