@@ -313,7 +313,7 @@ class User(db.Model):
         t = TwilioClient()
         t.send_message(to=self.phone, message=message)
 
-        text = Text(user=self, message=forecast, category=category)
+        text = Text(user=self, message=message, category=category)
         db.session.add(text)
         db.session.commit()
 
