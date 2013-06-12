@@ -58,9 +58,8 @@ class ForecastClient(object):
         else:
             hour_str = "{hour}am".format(hour=daily_high_hour)
 
-        temp_summary = "High of {temp} at {hour_str}.".format(
-            temp=self.format_temperature(daily_high_temp),
-            hour_str=hour_str
+        temp_summary = "High of {temp}.".format(
+            temp=self.format_temperature(daily_high_temp)
         )
 
         overall_summary = overall_summary + " " + temp_summary
