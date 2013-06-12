@@ -89,8 +89,8 @@ class ForecastClient(object):
 
     @staticmethod
     def format_temperature(temp):
-        # return u"{temp}".format(temp=int(round(temp)))
-        return u"{temp}°".format(temp=int(round(temp)))
+        return u"{temp}".format(temp=int(round(temp)))
+        # return u"{temp}°".format(temp=int(round(temp)))
 
 
 if __name__ == "__main__":
