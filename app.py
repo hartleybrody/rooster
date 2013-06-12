@@ -67,7 +67,8 @@ def homepage():
                     hr=u.alarm_hour,
                     min=u.alarm_minute,
                     mer=u.alarm_meridian
-                )
+                ),
+                "welcome"
             )
         except:
             flash("Hmm, we're having trouble sending to that phone number. Make sure you include your country code.", "error")
@@ -111,7 +112,6 @@ def process_inbound_message():
     errors_encountered = []
 
     user = User.query.filter(User.phone == message_number).first()
-    t = TwilioClient()
 
     if user is None:
 
@@ -119,8 +119,9 @@ def process_inbound_message():
             user = User.query.filter(User.phone == message_number[1:]).first()
 
         if user is None:
+            t = TwilioClient()
             message = "Couldn't find %s in our system. Go to http://www.roosterapp.co to sign up!" % (message_number)
-            t.send_message(to=message_number, message=message)
+            t.send_message(to=message_number, message=message, "response")
             return message
 
     # reactivate account
@@ -201,7 +202,7 @@ def process_inbound_message():
         message = "Reply w:\n'LOCATION:' with a town or region\n'TIME:' formatted HH:MM (in 24hr format)\n'TZ:' timezone offset, ie -4\n'STOP' to stop\n'STATUS' for current acct info"
 
     print message
-    user.send_message(message)
+    user.send_message(message, "response")
     return message
 
 
@@ -305,9 +306,16 @@ class User(db.Model):
         if utc_now - margin_of_error < todays_desired_alarm_time < utc_now + margin_of_error:
             return True
 
-    def send_message(self, message):
+    def send_message(self, message, category):
+        """
+        An method to send a message to this user.
+        """
         t = TwilioClient()
         t.send_message(to=self.phone, message=message)
+
+        text = Text(user=self, message=forecast, category=category)
+        db.session.add(text)
+        db.session.commit()
 
     def send_forecast(self):
         """
@@ -318,7 +326,7 @@ class User(db.Model):
         today = datetime.utcnow().date()
         texts = Text.query.filter(Text.user_id == self.id).all()
         for text in texts:
-            if text.sent.date() == today:
+            if text.category == "forecast" and text.sent.date() == today:
                 return False
 
         if self.latitude == "" or self.longitude == "":
@@ -341,12 +349,7 @@ class User(db.Model):
         f = ForecastClient()
         forecast = f.get_forecast(latitude, longitude)
 
-        t = TwilioClient()
-        t.send_message(self.phone, forecast)
-
-        text = Text(user=self, message=forecast)
-        db.session.add(text)
-        db.session.commit()
+        self.send_message(forecast, "forecast")
 
         return True
 
@@ -360,11 +363,13 @@ class Text(db.Model):
     user =      db.relationship('User', backref=db.backref('texts', lazy='dynamic'))
     sent =      db.Column(db.DateTime)
     message =   db.Column(db.String(160))
+    category =  db.Column(db.String(32))
 
-    def __init__(self, user, message):
+    def __init__(self, user, message, category):
         self.user = user
         self.sent = datetime.utcnow()
         self.message = message
+        self.category = category
 
     def __repr__(self):
         return '<Text %r>' % self.message
