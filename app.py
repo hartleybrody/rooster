@@ -343,6 +343,7 @@ class User(db.Model):
             self.latitude = latitude
             self.longitude = longitude
             db.session.add(self)
+            db.session.commit()
 
         else:
             latitude = self.latitude
