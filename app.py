@@ -51,11 +51,11 @@ def homepage():
             if value is None or value == "":
                 flash("Whoops, don't forget to fill out %s" % key, "error")
                 return redirect(url_for('homepage'))
-            if key == "phone" and len(value) < 10:
-                flash("'%s' is too short to be a phone number. Make sure you include the country code." % value, "error")
+            if key == "phone" and len(value) < 11:
+                flash("'%s' seems a bit short for a phone number. Make sure you include the country code." % value, "error")
                 return redirect(url_for('homepage'))
             if key == "location" and len(value) < 5:
-                flash("You'll need to be more specific about your location. '%s' isn't much to work with." % value, "error")
+                flash("Tell us more about your location. '%s' isn't much to work with." % value, "error")
                 return redirect(url_for('homepage'))
 
         u = User(**data)
