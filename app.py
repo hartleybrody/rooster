@@ -94,6 +94,11 @@ def homepage():
             return render_template("homepage.html")
 
 
+@app.route("/donate/", methods=['GET'])
+def donate():
+    return render_template("donate.html")
+
+
 @app.route("/message/receive/", methods=['GET', 'POST'])
 def process_inbound_message():
 

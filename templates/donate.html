@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+                {% block title %}Donate | Rooster | Wake up to a text with the forecast | Cock-a-doodle-doo{% endblock %}
+                {% block content %}
+                    <div class="row">
+                        <div class="span4 offset1">
+                            <h4>Hey there!</h4>
+                            <p>
+                                <img src="https://twimg0-a.akamaihd.net/profile_images/1542000650/DSC_0255.jpg" style="float:right; width:100px; padding:5px;" />
+                                My name is Hartley and I built Rooster as a side project in the summer of 2013.
+                            </p>
+                            <p>
+                                Since then, Rooster has faithfully delievered tens of thousands of forecast messages to places around the world, such as:
+                                <ul>
+                                    <li>China</li>
+                                    <li>Thailand</li>
+                                    <li>Australia</li>
+                                    <li>Austria</li>
+                                    <li>United States</li>
+                                </ul>
+                                and continues to send messages every day.
+                            </p>
+                            <p>
+                                Since I have to pay to send messages through Twilio, the site costs about $30/mo USD to run.
+                            </p>
+                            <p>
+                                If you've found Rooster to be a cheerful addition to your morning, I'd love it if you could donate even a little bit.
+                            </p>
+                            <div class="row">
+                                <div class="span2">
+                                    <h4>Git Tip</h4>
+                                    <p>
+                                        <script data-gittip-username="hartleybrody" src="//gttp.co/v1.js"></script>
+                                    </p>
+                                </div>
+                                <div class="span2">
+                                    <h4>Paypal</h4>
+                                    <p>
+                                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                                        <input type="hidden" name="cmd" value="_donations">
+                                        <input type="hidden" name="business" value="hartley.brody@gmail.com">
+                                        <input type="hidden" name="lc" value="US">
+                                        <input type="hidden" name="item_name" value="Hartley Brody">
+                                        <input type="hidden" name="no_note" value="0">
+                                        <input type="hidden" name="currency_code" value="USD">
+                                        <input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest">
+                                        <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                                        <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                                        </form>
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endblock %}
