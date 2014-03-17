@@ -1,0 +1,28 @@
+from app import User, sentry, app
+
+
+def send_texts():
+
+    # users = User.query.all()
+    users = User.query.filter_by(phone="12169738246")
+    for user in users:
+        if user.is_active:
+
+            current_offset = user.time_zone
+            suggested_offset = int(current_offset) + 1
+
+            message = "Hope you've found Rooster to be a helpful addition to your morning! The site costs $30/month to operate. I'd love your support: http://www.roosterapp.co/donate/"
+            try:
+                sent = user.send_message(message, "dst_warning")
+                if sent:
+                    print "sent request to %s" % user
+                else:
+                    print "didn't send request to %s" % user
+            except Exception as e:
+                print e
+                sentry.captureException()
+
+
+if __name__ == "__main__":
+
+    send_texts()
