@@ -314,6 +314,7 @@ class User(db.Model):
         text = Text(user=self, message=message, category=category)
         db.session.add(text)
         db.session.commit()
+        return True
 
     def send_forecast(self):
         """
