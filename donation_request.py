@@ -1,10 +1,11 @@
+import os
+
 from app import User, sentry, app
 
 
 def send_texts():
 
-    # users = User.query.all()
-    # users = User.query.filter_by(phone="12169738246")
+    # users = User.query.filter_by(phone=os.environ["TEST_PHONE_NUM"])
     users = User.query.filter_by(is_active=True)
     for user in users:
         if user.is_active:
